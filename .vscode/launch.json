@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Test",
+      "program": "${workspaceRoot}/node_modules/jest/bin/jest",
+      "args": ["--runInBand", "--watchAll=false", "--coverage", "src/*"],
+      "cwd": "${workspaceRoot}",
+      "runtimeVersion": "20.11.0",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run",
+      "program": "${workspaceRoot}/src/index.js",
+      "cwd": "${workspaceRoot}",
+      "runtimeVersion": "20.11.0",
+      "internalConsoleOptions": "openOnSessionStart"
+    }
+  ]
+}

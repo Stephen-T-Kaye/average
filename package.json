@@ -1,0 +1,48 @@
+{
+  "name": "average",
+  "version": "0.0.1",
+  "description": "An Average Service",
+  "main": "src/index.js",
+  "engines": {
+    "node": "~20.11.0",
+    "npm": "~10"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "jest --coverage src/*",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Stephen-T-Kaye/average.git"
+  },
+  "author": "Stephen Kaye",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Stephen-T-Kaye/average/issues"
+  },
+  "homepage": "https://github.com/Stephen-T-Kaye/average#readme",
+  "dependencies": {
+    "@hapi/hapi": "^21.3.3",
+    "hapi-pino": "^12.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-google": "^0.14.0",
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    }
+  }
+}
