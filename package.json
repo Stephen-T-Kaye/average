@@ -12,7 +12,7 @@
     "pretest": "npm run lint",
     "test": "jest --coverage src/*",
     "start": "node src/index.js",
-    "doc": "jsdoc src -d docs -r"
+    "doc": "jsdoc src -d _pages/docs -r"
   },
   "repository": {
     "type": "git",
@@ -38,6 +38,7 @@
     "collectCoverageFrom": [
       "src/**/*.js"
     ],
+    "coverageDirectory": "<rootDir>/_pages/coverage",
     "coverageThreshold": {
       "global": {
         "statements": 100,

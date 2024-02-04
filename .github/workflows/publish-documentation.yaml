@@ -30,10 +30,11 @@ jobs:
         run: |
           npm ci
           npm run doc
+          npm run test
       - name: Publish
         uses: actions/upload-pages-artifact@v2
         with:
-          PATH: docs
+          PATH: _pages
 
   deploy:
     environment:
