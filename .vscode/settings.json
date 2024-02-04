@@ -2,5 +2,10 @@
   "search.exclude": {
     "**/node_modules/": true,
     "**/_pages": true
-  }
+  },
+  "editor.formatOnSave": false,
+  "prettier.jsxSingleQuote": true,
+  "prettier.singleQuote": true,
+  "prettier.bracketSpacing": false,
+  "prettier.trailingComma": "all"
 }
