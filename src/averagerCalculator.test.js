@@ -11,8 +11,8 @@ describe('averageCalculator', () => {
   });
 
   describe('addValue', () => {
-    ['string', {}, null].forEach((testArgument) => {
-      test(`called with ${testArgument} throws`, () => {
+    ['', ' ', 'string', {}, null].forEach((testArgument) => {
+      test(`called with '${testArgument}' throws`, () => {
         const averageCalculator = createAverageCalculator();
         expect(() => averageCalculator.addValue(testArgument)).toThrow();
       });
