@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
-    "test": "jest --coverage src/*",
+    "test": "jest --testPathPattern src/*",
+    "coverage": "npm run test -- --coverage",
     "start": "node src/index.js",
     "doc": "jsdoc src -d _pages/docs -r"
   },
