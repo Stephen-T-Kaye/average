@@ -12,7 +12,7 @@ describe('averageCalculator', () => {
 
   describe('addValue', () => {
     ['string', {}, null].forEach((testArgument) => {
-      test('called with non numeric value throws', () => {
+      test(`called with ${testArgument} throws`, () => {
         const averageCalculator = createAverageCalculator();
         expect(() => averageCalculator.addValue(testArgument)).toThrow();
       });
@@ -20,7 +20,7 @@ describe('averageCalculator', () => {
 
     test('called with numeric value does not throw', async () => {
       const averageCalculator = createAverageCalculator();
-      expect(() => averageCalculator.addValue('error')).not.toThrow();
+      expect(() => averageCalculator.addValue(10)).not.toThrow();
     });
   });
 
