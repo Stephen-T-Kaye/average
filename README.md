@@ -69,7 +69,7 @@ npm run test
 
 A HTML Test Report will be written to `./_pages/tests`.
 
-Successful CI builds also publish these [test](https://stephen-t-kaye.github.io/average/tests/) to GitHub Pages
+Successful CI builds also publish the [Test Report](https://stephen-t-kaye.github.io/average/tests/) to GitHub Pages
 
 
 Run tests with code coverage: Also runs linting first
