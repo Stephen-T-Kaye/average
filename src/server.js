@@ -1,9 +1,13 @@
 const Hapi = require('@hapi/hapi');
 
 /**
- * Creates a Hapi Server listening on the given port and returns
- * a reference to the server.
+ * An Average Service Server.
  * @module server
+ */
+
+/**
+ * Creates a Hapi Server listening on the given port, starts it and returns
+ * a reference to the server.
  * @param {int} port The port number for the Hapi Server to listen on.
  * @return {Hapi.Server} A Hapi Server
  */
