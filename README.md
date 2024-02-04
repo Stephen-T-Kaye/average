@@ -46,3 +46,52 @@ This algorithm is the most optimal way to track the average because it
 
 I've chosen hapi for the framework and will implement the requirements as a Hapi plugin
 to improve testability.
+
+## Building, Testing & Documentation
+
+Install the dependencies:
+
+```sh
+npm ci
+```
+
+Run the linting:
+
+```sh
+npm run lint
+```
+
+Run unit tests: Also runs linting first
+
+```sh
+npm run test
+```
+
+Run tests with code coverage: Also runs linting first
+
+```sh
+npm run coverage
+```
+
+A code coverage reports will be written to `./_pages/coverage`.
+
+Successful CI builds also publish the [coverage report](https://stephen-t-kaye.github.io/average/coverage/lcov-report)
+for master to GitHub Pages
+
+Build the docs:
+
+```sh
+npm run doc
+```
+
+JSDocs will be written to `./_pages/docs`
+
+Successful CI builds also publish these [docs](https://stephen-t-kaye.github.io/average/docs/) to GitHub Pages
+
+## Running
+
+```sh
+  npm run start
+```
+
+The service will then be available on [http://localhost:3000](http://localhost:3000).

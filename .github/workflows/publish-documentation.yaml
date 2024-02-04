@@ -30,7 +30,7 @@ jobs:
         run: |
           npm ci
           npm run doc
-          npm run test
+          npm run coverage
       - name: Publish
         uses: actions/upload-pages-artifact@v2
         with:
