@@ -67,13 +67,18 @@ Run unit tests: Also runs linting first
 npm run test
 ```
 
+A HTML Test Report will be written to `./_pages/tests`.
+
+Successful CI builds also publish these [test](https://stephen-t-kaye.github.io/average/tests/) to GitHub Pages
+
+
 Run tests with code coverage: Also runs linting first
 
 ```sh
 npm run coverage
 ```
 
-A code coverage reports will be written to `./_pages/coverage`.
+Code coverage reports will be written to `./_pages/coverage`.
 
 Successful CI builds also publish the [coverage report](https://stephen-t-kaye.github.io/average/coverage/lcov-report)
 for master to GitHub Pages
