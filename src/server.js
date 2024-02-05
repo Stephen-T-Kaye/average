@@ -1,5 +1,7 @@
 const Hapi = require('@hapi/hapi');
 
+const randomValues = require('./randomValues');
+
 /**
  * An Average Service Server.
  * @module server
@@ -17,14 +19,19 @@ exports.launch = async (port) => {
     host: 'localhost',
   });
 
-  await server.register([{
-    plugin: require('hapi-pino'),
-    options: {
-      // Redact Authorization headers, see https://getpino.io/#/docs/redaction
-      // The brief stipulates no auth but this is usually a sensible default
-      redact: ['req.headers.authorization'],
+  await server.register([
+    {
+      plugin: require('hapi-pino'),
+      options: {
+        // Redact Authorization headers, see https://getpino.io/#/docs/redaction
+        // The brief stipulates no auth but this is usually a sensible default
+        redact: ['req.headers.authorization'],
+      },
     },
-  }]);
+    {
+      plugin: randomValues,
+    },
+  ]);
 
   await server.start();
   // eslint-disable-next-line no-console
