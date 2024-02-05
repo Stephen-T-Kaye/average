@@ -1,4 +1,4 @@
-const averageCalculator = function createAverageCalculator() {
+const createAverageCalculator = function createAverageCalculator() {
   let currentAverage = 0;
   let sampleSize = 0;
   return {
@@ -17,4 +17,6 @@ const averageCalculator = function createAverageCalculator() {
   };
 };
 
-module.exports = averageCalculator;
+module.exports = {
+  create: createAverageCalculator,
+};
