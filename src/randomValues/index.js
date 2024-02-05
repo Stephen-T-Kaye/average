@@ -1,3 +1,5 @@
+const averageCalculator = require('../averageCalculator')();
+
 exports.plugin = {
   name: 'randomValues',
   version: '1.0.0',
@@ -7,8 +9,9 @@ exports.plugin = {
       path: '/random-value/average',
       config: {
         description: 'Returns average of random values',
+        bind: {averageCalculator},
         handler: function(request, h) {
-          throw new Error('Not implemented');
+          return {average: h.context.averageCalculator.getAverage()};
         },
       },
     });
