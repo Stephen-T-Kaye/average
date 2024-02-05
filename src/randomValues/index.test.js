@@ -11,8 +11,8 @@ afterAll(async () => {
   await server.stop();
 });
 
-describe('Routes', () => {
-  describe('random-value/average', () => {
+describe('random-value', () => {
+  describe('registers route /average', () => {
     test('returns 200', async () => {
       const request = await server.inject({
         method: 'GET',
