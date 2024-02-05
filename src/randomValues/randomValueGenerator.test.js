@@ -3,13 +3,13 @@ const randomValueGenerator = require('./randomValueGenerator');
 describe('randomValueGenerator', () => {
   describe('create', () => {
     test('returns object with interval', () => {
-      let objectUnderTest = randomValueGenerator.create(100);
+      let objectUnderTest = randomValueGenerator.create(100, () => {});
       expect(objectUnderTest).toMatchObject({
         getInterval: expect.any(Function),
       });
       expect(objectUnderTest.getInterval()).toBe(100);
 
-      objectUnderTest = randomValueGenerator.create(200);
+      objectUnderTest = randomValueGenerator.create(200, () => {});
       expect(objectUnderTest).toMatchObject({
         getInterval: expect.any(Function),
       });
