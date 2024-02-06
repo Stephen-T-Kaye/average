@@ -1,5 +1,6 @@
 const Server = require('../server.js');
 const axios = require('axios');
+const axiosTestHelper = require('../axios.test.helper.js');
 
 let server = null;
 
@@ -28,30 +29,15 @@ describe('random-value', () => {
 
     test('returns object with average', async () => {
       // Mock return values from external API
-      const mock = [1, 15, 16, 38, 76, 22].reduce((accumulator, randomValue) =>
-        (accumulator || axios.get).mockImplementationOnce(
-            () =>
-              Promise.resolve({
-                data: [
-                  {status: 'success', min: 0, max: 100, random: randomValue},
-                ],
-              }),
-        ),
-      null,
+      let mock = axiosTestHelper.csrng(axios);
+      mock = [1, 15, 16, 38, 76, 22].reduce((accumulator, randomValue) =>
+        accumulator.mockSuccessfulResponseOnce(randomValue),
+      mock,
       );
 
       // Mock recoverable response so service doesn't fail after receiving
       // mocked values
-      mock.mockImplementation(() =>
-        Promise.resolve({
-          data: [
-            {
-              status: 'error',
-              code: '5',
-            },
-          ],
-        }),
-      );
+      mock.mockUnsuccessfulResponse(5);
 
       await new Promise((r) => setTimeout(r, 8000));
       const request = await server.inject({

@@ -3,14 +3,12 @@ const Hapi = require('@hapi/hapi');
 const index = require('./index.js');
 const axios = require('axios');
 
+const axiosTestHelper = require('./axios.test.helper.js');
+
 let server;
 
 beforeAll(() => {
-  axios.get.mockImplementation(() =>
-    Promise.resolve({
-      data: [{status: 'success', min: 0, max: 100, random: 54}],
-    }),
-  );
+  axiosTestHelper.csrng(axios).mockSuccessfulResponse(54);
 });
 
 afterAll(async () => {

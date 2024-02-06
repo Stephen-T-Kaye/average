@@ -1,4 +1,5 @@
 const randomValueGenerator = require('./randomValueGenerator');
+const axiosTestHelper = require('../axios.test.helper.js');
 
 const axios = require('axios');
 let objectUnderTest;
@@ -61,11 +62,7 @@ describe('randomValueGenerator', () => {
 
   describe('stop', () => {
     test('stops the generator from generating new values', async () => {
-      axios.get.mockImplementation(() =>
-        Promise.resolve({
-          data: [{status: 'success', min: 0, max: 100, random: 54}],
-        }),
-      );
+      axiosTestHelper.csrng(axios).mockSuccessfulResponse(54);
 
       let pollCount = 0;
       objectUnderTest = randomValueGenerator.create(200, () => {
@@ -79,11 +76,10 @@ describe('randomValueGenerator', () => {
 
   describe('api calls', () => {
     test('generator polls api', async () => {
-      const axiosMock = axios.get.mockImplementation(() =>
-        Promise.resolve({
-          data: [{status: 'success', min: 0, max: 100, random: 54}],
-        }),
-      );
+      const axiosMock = axiosTestHelper
+          .csrng(axios)
+          .mockSuccessfulResponse(54)
+          .mock();
       let randomValue;
       objectUnderTest = randomValueGenerator.create(100, (random) => {
         randomValue = random;
@@ -96,16 +92,10 @@ describe('randomValueGenerator', () => {
 
     // eslint-disable-next-line max-len
     test('raises exception and stops polling when an unrecoverable response is returned', async () => {
-      const axiosMock = axios.get.mockImplementation(() =>
-        Promise.resolve({
-          data: [
-            {
-              status: 'error',
-              code: '4',
-            },
-          ],
-        }),
-      );
+      const axiosMock = axiosTestHelper
+          .csrng(axios)
+          .mockUnsuccessfulResponse(4)
+          .mock();
       let errorRaised = false;
       let pollCount = 0;
       objectUnderTest = randomValueGenerator.create(
@@ -126,9 +116,10 @@ describe('randomValueGenerator', () => {
 
     // eslint-disable-next-line max-len
     test('raises exception and stops polling if http request fails', async () => {
-      const axiosMock = axios.get.mockImplementation(() =>
-        Promise.reject(new Error('Bad Request')),
-      );
+      const axiosMock = axiosTestHelper
+          .csrng(axios)
+          .mockError(new Error('Bad Request'))
+          .mock();
 
       let errorRaised = false;
       let pollCount = 0;
@@ -149,16 +140,10 @@ describe('randomValueGenerator', () => {
     });
 
     test('retries request if recoverable', async () => {
-      const axiosMock = axios.get.mockImplementation(() =>
-        Promise.resolve({
-          data: [
-            {
-              status: 'error',
-              code: '5',
-            },
-          ],
-        }),
-      );
+      const axiosMock = axiosTestHelper
+          .csrng(axios)
+          .mockUnsuccessfulResponse(5)
+          .mock();
       objectUnderTest = randomValueGenerator.create(100, () => {});
       await new Promise((r) => setTimeout(r, 1000));
       expect(axiosMock).toHaveBeenCalled();
@@ -166,9 +151,10 @@ describe('randomValueGenerator', () => {
     });
 
     test('retries request if connection fails', async () => {
-      const axiosMock = axios.get.mockImplementation(() =>
-        Promise.reject(networkError),
-      );
+      const axiosMock = axiosTestHelper
+          .csrng(axios)
+          .mockNetworkError()
+          .mock();
 
       objectUnderTest = randomValueGenerator.create(100, () => {});
       await new Promise((r) => setTimeout(r, 1000));
@@ -176,11 +162,12 @@ describe('randomValueGenerator', () => {
       expect(axiosMock.mock.calls.length).toBeGreaterThan(1);
     });
 
-    test('doesn\'t retry request if connection fails but state is stopped'
-        , async () => {
-          const axiosMock = axios.get.mockImplementation(() =>
-            Promise.reject(networkError),
-          );
+    test('doesn\'t retry request if connection fails but state is stopped',
+        async () => {
+          const axiosMock = axiosTestHelper
+              .csrng(axios)
+              .mockNetworkError()
+              .mock();
 
           objectUnderTest = randomValueGenerator.create(100, () => {});
           objectUnderTest.stop();
