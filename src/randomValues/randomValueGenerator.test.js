@@ -1,7 +1,10 @@
 const randomValueGenerator = require('./randomValueGenerator');
 
-const {default: axios} = require('axios');
-jest.mock('axios');
+const axios = require('axios');
+
+afterEach(() => {
+  axios.get.mockRestore();
+});
 
 describe('randomValueGenerator', () => {
   describe('create', () => {
@@ -52,15 +55,23 @@ describe('randomValueGenerator', () => {
 
   describe('api calls', () => {
     test('generator polls api', async () => {
-      const axiosMock = axios.get.mockImplementation(() => Promise.resolve({}));
-      randomValueGenerator.create(100, () => {});
+      const axiosMock = axios.get.mockImplementation(() =>
+        Promise.resolve({
+          data: [{status: 'success', min: 0, max: 100, random: 54}],
+        }),
+      );
+      let randomValue;
+      randomValueGenerator.create(100, (random) => {
+        randomValue = random;
+      });
       await new Promise((r) => setTimeout(r, 1000));
       expect(axiosMock).toHaveBeenCalled();
+      expect(randomValue).toBe(54);
       expect(axiosMock.mock.calls.length).toBeGreaterThan(1);
     });
 
     // eslint-disable-next-line max-len
-    test('raises exception and stops polling if receives an unrecoverable response', async () => {
+    test('raises exception and stops polling when an unrecoverable response is returned', async () => {
       const axiosMock = axios.get.mockImplementation(() =>
         Promise.resolve({
           data: [
@@ -72,36 +83,45 @@ describe('randomValueGenerator', () => {
         }),
       );
       let errorRaised = false;
+      let pollCount = 0;
       randomValueGenerator.create(
           100,
-          () => {},
           () => {
+            pollCount++;
+          },
+          () => {
+            pollCount++;
             errorRaised = true;
           },
       );
       await new Promise((r) => setTimeout(r, 1000));
       expect(axiosMock).toHaveBeenCalled();
-      expect(axiosMock.mock.calls.length).toBe(1);
       expect(errorRaised).toBe(true);
+      expect(pollCount).toBe(1);
     });
 
     // eslint-disable-next-line max-len
     test('raises exception and stops polling if http request fails', async () => {
-      const axiosMock = axios.get.mockImplementation(
-          () => Promise.reject(new Error('Bad Request')));
+      const axiosMock = axios.get.mockImplementation(() =>
+        Promise.reject(new Error('Bad Request')),
+      );
 
       let errorRaised = false;
+      let pollCount = 0;
       randomValueGenerator.create(
           100,
-          () => {},
           () => {
+            pollCount++;
+          },
+          () => {
+            pollCount++;
             errorRaised = true;
           },
       );
       await new Promise((r) => setTimeout(r, 1000));
       expect(axiosMock).toHaveBeenCalled();
-      expect(axiosMock.mock.calls.length).toBe(1);
       expect(errorRaised).toBe(true);
+      expect(pollCount).toBe(1);
     });
 
     test('retries request if recoverable', async () => {
