@@ -1,4 +1,5 @@
 const Server = require('../server.js');
+const axios = require('axios');
 
 let server = null;
 
@@ -12,7 +13,11 @@ afterAll(async () => {
 });
 
 describe('random-value', () => {
-  describe('registers route /average', () => {
+  describe('route /average', () => {
+    afterEach(() => {
+      axios.get.mockRestore();
+    });
+
     test('returns 200', async () => {
       const request = await server.inject({
         method: 'GET',
@@ -22,14 +27,41 @@ describe('random-value', () => {
     });
 
     test('returns object with average', async () => {
+      // Mock return values from external API
+      const mock = [1, 15, 16, 38, 76, 22].reduce((accumulator, randomValue) =>
+        (accumulator || axios.get).mockImplementationOnce(
+            () =>
+              Promise.resolve({
+                data: [
+                  {status: 'success', min: 0, max: 100, random: randomValue},
+                ],
+              }),
+        ),
+      null,
+      );
+
+      // Mock recoverable response so service doesn't fail after receiving
+      // mocked values
+      mock.mockImplementation(() =>
+        Promise.resolve({
+          data: [
+            {
+              status: 'error',
+              code: '5',
+            },
+          ],
+        }),
+      );
+
+      await new Promise((r) => setTimeout(r, 8000));
       const request = await server.inject({
         method: 'GET',
         url: '/random-value/average',
       });
       expect(request.statusCode).toBe(200);
       expect(request.result).toMatchObject({
-        average: expect.any(Number),
+        average: 28,
       });
-    });
+    }, 10000);
   });
 });

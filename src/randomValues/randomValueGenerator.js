@@ -20,14 +20,18 @@ const createRandomValueGenerator = function createRandomValueGenerator(
     throw new Error('Invalid onError');
   }
 
-  const axiosInstance = axios.create();
+  let timeoutHandle;
+  let stopped = false;
 
-  const callApi = () =>
+  const axiosInstance = axios.create({timeout: 1000});
+  const callApi = () => {
     axiosInstance
         .get(url)
         .then((resp) => {
           if (resp.data[0].status === 'success') {
-            onValueGenerated(resp.data[0].random);
+            try {
+              onValueGenerated(resp.data[0].random);
+            } catch {}
           } else {
             if (resp.data[0].code != 5) {
               throw new Error('API error');
@@ -35,18 +39,30 @@ const createRandomValueGenerator = function createRandomValueGenerator(
           }
         })
         .then(() => {
-          setTimeout(callApi, interval);
+          if (!stopped) {
+            timeoutHandle = setTimeout(callApi, interval);
+          }
         })
-        .catch(() => {
+        .catch((err) => {
           if (onError) {
-            onError(new Error('API Error'));
+            try {
+              onError(new Error('API Error'));
+            } catch {}
+          }
+          if (err.code === 'ECONNABORTED' && !stopped) {
+            timeoutHandle = setTimeout(callApi, interval);
           }
         });
+  };
 
   setTimeout(callApi, interval);
 
   return {
     getInterval: () => interval,
+    stop: () => {
+      stopped = true;
+      clearTimeout(timeoutHandle);
+    },
   };
 };
 
