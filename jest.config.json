@@ -20,5 +20,6 @@
                 "outputPath": "./_pages/tests/index.html"
             }
         ]
-    ]
+    ],
+    "clearMocks": true
 }

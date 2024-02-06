@@ -1,4 +1,4 @@
-const averageCalculator = require('../averageCalculator');
+const averageCalculator = require('./averageCalculator');
 
 exports.plugin = {
   name: 'randomValues',
