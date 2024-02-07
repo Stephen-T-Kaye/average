@@ -1,9 +1,18 @@
+/**
+ * hapi Plugin.
+ * @module randomValues
+ */
+
 const averageCalculator = require('./averageCalculator');
 const randomValueGenerator = require('./randomValueGenerator');
 
+/**
+ * Returns a hapi plugin that can be registered with a hapi server.
+ */
 exports.plugin = {
   name: 'randomValues',
   version: '1.0.0',
+
   register: async function(server, options) {
     const ac = averageCalculator.create();
     const rvg = randomValueGenerator.create(1000, (randomValue) => {
