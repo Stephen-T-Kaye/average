@@ -96,6 +96,7 @@ Successful CI builds also publish these [docs](https://stephen-t-kaye.github.io/
 ## Running
 
 ```sh
+  npm run ci
   npm run start
 ```
 
