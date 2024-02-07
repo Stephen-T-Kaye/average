@@ -1,10 +1,10 @@
-const createAverageCalculator = require('./averageCalculator.js');
+const averageCalculator = require('./averageCalculator.js');
 
 describe('averageCalculator', () => {
   test('returns an object with 2 functions', async () => {
-    const averageCalculator = createAverageCalculator();
+    const ac = averageCalculator.create();
 
-    expect(averageCalculator).toMatchObject({
+    expect(ac).toMatchObject({
       addValue: expect.any(Function),
       getAverage: expect.any(Function),
     });
@@ -13,21 +13,21 @@ describe('averageCalculator', () => {
   describe('addValue', () => {
     ['', ' ', 'string', {}, null].forEach((testArgument) => {
       test(`called with '${testArgument}' throws`, () => {
-        const averageCalculator = createAverageCalculator();
-        expect(() => averageCalculator.addValue(testArgument)).toThrow();
+        const ac = averageCalculator.create();
+        expect(() => ac.addValue(testArgument)).toThrow();
       });
     });
 
     test('called with numeric value does not throw', async () => {
-      const averageCalculator = createAverageCalculator();
-      expect(() => averageCalculator.addValue(10)).not.toThrow();
+      const ac = averageCalculator.create();
+      expect(() => ac.addValue(10)).not.toThrow();
     });
   });
 
   describe('getAverage', () => {
     test('returns 0 if no values have been added', async () => {
-      const averageCalculator = createAverageCalculator();
-      expect(averageCalculator.getAverage()).toBe(0);
+      const ac = averageCalculator.create();
+      expect(ac.getAverage()).toBe(0);
     });
 
     [
@@ -39,11 +39,11 @@ describe('averageCalculator', () => {
       test(`calculates the average of ${JSON.stringify(
           testArgument.values,
       )} as ${testArgument.average}`, () => {
-        const averageCalculator = createAverageCalculator();
+        const ac = averageCalculator.create();
         testArgument.values.forEach((newValue) =>
-          averageCalculator.addValue(newValue),
+          ac.addValue(newValue),
         );
-        expect(averageCalculator.getAverage()).toBe(testArgument.average);
+        expect(ac.getAverage()).toBe(testArgument.average);
       });
     });
   });

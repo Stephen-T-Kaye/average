@@ -27,6 +27,7 @@
   "homepage": "https://github.com/Stephen-T-Kaye/average#readme",
   "dependencies": {
     "@hapi/hapi": "^21.3.3",
+    "axios": "^1.6.7",
     "hapi-pino": "^12.1.0"
   },
   "devDependencies": {

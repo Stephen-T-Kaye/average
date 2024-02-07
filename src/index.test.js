@@ -1,15 +1,23 @@
 const Hapi = require('@hapi/hapi');
 
 const index = require('./index.js');
+const axios = require('axios');
+
+const axiosTestHelper = require('./axios.test.helper.js');
+
+let server;
+
+beforeAll(() => {
+  axiosTestHelper.csrng(axios).mockSuccessfulResponse(54);
+});
 
 afterAll(async () => {
-  const server = await index;
   await server.stop();
 });
 
 describe('index.js', () => {
   test('Creates Hapi server', async () => {
-    const server = await index;
+    server = await index;
 
     const expectedConstructor = Hapi.server().constructor;
 

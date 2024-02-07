@@ -2,6 +2,14 @@
     "collectCoverageFrom": [
         "src/**/*.js"
     ],
+    "coveragePathIgnorePatterns": [
+        "/node_modules/",
+        ".*\\.test\\.helper\\.js"
+    ],
+    "testPathIgnorePatterns" :[
+        "/node_modules/",
+        ".*\\.test\\.helper\\.js"
+    ],
     "coverageDirectory": "<rootDir>/_pages/coverage",
     "coverageThreshold": {
         "global": {
@@ -20,5 +28,6 @@
                 "outputPath": "./_pages/tests/index.html"
             }
         ]
-    ]
+    ],
+    "clearMocks": true
 }
