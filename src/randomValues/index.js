@@ -3,6 +3,7 @@
  * @module randomValues
  */
 
+const Joi = require('joi');
 const averageCalculator = require('./averageCalculator');
 const randomValueGenerator = require('./randomValueGenerator');
 
@@ -28,10 +29,19 @@ exports.plugin = {
       method: 'GET',
       path: '/random-value/average',
       config: {
+        tags: ['api'],
         description: 'Returns average of random values',
         bind: {averageCalculator: ac},
         handler: function(request, h) {
           return {average: h.context.averageCalculator.getAverage()};
+        },
+        response: {
+          sample: 0,
+          status: {
+            200: Joi.object({
+              average: Joi.number().required(),
+            }).label('average-response'),
+          },
         },
       },
     });

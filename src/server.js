@@ -1,5 +1,8 @@
 const Hapi = require('@hapi/hapi');
-
+const Inert = require('@hapi/inert');
+const Vision = require('@hapi/vision');
+const HapiSwagger = require('hapi-swagger');
+const Pack = require('../package');
 const randomValues = require('./randomValues');
 
 /**
@@ -19,7 +22,21 @@ exports.launch = async (port) => {
     host: 'localhost',
   });
 
+  const swaggerOptions = {
+    info: {
+      title: 'Average service API Documentation',
+      version: Pack.version,
+    },
+    documentationPath: '/',
+  };
+
   await server.register([
+    Inert,
+    Vision,
+    {
+      plugin: HapiSwagger,
+      options: swaggerOptions,
+    },
     {
       plugin: require('hapi-pino'),
       options: {
