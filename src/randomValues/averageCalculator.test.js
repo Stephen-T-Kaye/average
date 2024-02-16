@@ -40,10 +40,29 @@ describe('averageCalculator', () => {
           testArgument.values,
       )} as ${testArgument.average}`, () => {
         const ac = averageCalculator.create();
-        testArgument.values.forEach((newValue) =>
-          ac.addValue(newValue),
-        );
+        testArgument.values.forEach((newValue) => ac.addValue(newValue));
         expect(ac.getAverage()).toBe(testArgument.average);
+      });
+    });
+  });
+
+  describe('getFrequency', () => {
+    [
+      {values: [], number: 0, expectedResult: 0},
+      // {values: [1, 10, 8], average: 6.333333333333333},
+      // {values: [13, 27, 83], average: 41},
+      // {values: [13, 27, 83, 10, 27, 16, 79], average: 36.42857142857143},
+    ].forEach((testArgument) => {
+      test(`Returns frequency of ${
+        testArgument.number
+      } from the values ${JSON.stringify(testArgument.values)} as ${
+        testArgument.expectedResult
+      }`, () => {
+        const ac = averageCalculator.create();
+        testArgument.values.forEach((newValue) => ac.addValue(newValue));
+        expect(ac.getFrequency(testArgument.number)).toBe(
+            testArgument.expectedResult,
+        );
       });
     });
   });
