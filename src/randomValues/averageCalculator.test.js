@@ -49,9 +49,11 @@ describe('averageCalculator', () => {
   describe('getFrequency', () => {
     [
       {values: [], number: 0, expectedResult: 0},
-      // {values: [1, 10, 8], average: 6.333333333333333},
-      // {values: [13, 27, 83], average: 41},
-      // {values: [13, 27, 83, 10, 27, 16, 79], average: 36.42857142857143},
+      {values: [], number: 7, expectedResult: 0},
+      {values: [1, 1, 3, 6], number: 0, expectedResult: 0},
+      {values: [1, 1, 3, 6], number: 1, expectedResult: 2},
+      {values: [1, 1, 3, 6], number: 3, expectedResult: 1},
+      {values: [1, 1, 3, 6], number: 6, expectedResult: 1},
     ].forEach((testArgument) => {
       test(`Returns frequency of ${
         testArgument.number
